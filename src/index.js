@@ -9,24 +9,8 @@ import {applyMiddleware, combineReducers, compose, createStore} from 'redux';
 import {Provider} from 'react-redux';
 import thunk from 'redux-thunk';
 import userReducer from "./store/reducers/userReducer";
-
-
-const history = createBrowserHistory();
-const rootReducer = combineReducers({
-  users: userReducer,
-  // posts: postReducer,
-  router: connectRouter(history),
-});
-
-const logger = store => next => action => {
-  return next(action);
-};
-
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-const store = createStore(
-  rootReducer,
-  composeEnhancers(applyMiddleware(logger, thunk, routerMiddleware(history))),
-);
+import store from "./store/store";
+import {history} from "./store/store";
 
 ReactDOM.render(
   <React.StrictMode>

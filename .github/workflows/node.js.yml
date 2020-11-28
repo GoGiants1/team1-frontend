@@ -27,5 +27,4 @@ jobs:
     - run: yarn install --frozen-lockfile
     - run: yarn add coveralls
     - run: yarn test --coverage --watchAll=false
-    - run: cat ./coverage/lcov.info | coveralls
     - run: npm run build --if-present

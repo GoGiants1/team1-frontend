@@ -1,0 +1,12 @@
+export const GET_POSTS = 'GET_POSTS';
+export const GET_POST_RESPONSES = 'GET_POST_RESPONSES';
+
+export const GET_SPECIFIC_POST= 'GET_SPECIFIC_POST';
+
+export const LOGIN_USER = 'LOGIN_USER';
+
+export const SET_USER_PROFILE = 'SET_USER_PROFILE';
+export const GET_CURRENT_USER = 'GET_CURRENT_USER';
+export const SET_USER_ACCOUNT = 'SET_USER_ACCOUNT';
+
+export const SET_SELECTED_POST = 'SET_SELECTED_POST';

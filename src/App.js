@@ -1,9 +1,10 @@
 import { routes } from './Routes'
-import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom'
+import { Switch, Route, Redirect } from 'react-router-dom'
+import { ConnectedRouter } from 'connected-react-router';
 
-function App() {
+function App({history}) {
   return (
-    <BrowserRouter>
+    <ConnectedRouter history={history}>
       <Switch>
         <Route path={routes.users.path} component={routes.users.component} />
         <Route path={routes.posts.path} component={routes.posts.component} />
@@ -11,9 +12,9 @@ function App() {
         <Route path={routes.login.path} component={routes.login.component} />
         <Route path={routes.signup.path} component={routes.signup.component} />
         
-        <Redirect to={routes.users.path} />
+        <Redirect from='/' to={routes.users.path} />
       </Switch>
-    </BrowserRouter>
+    </ConnectedRouter>
   );
 }
 

@@ -3,10 +3,20 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import {createBrowserHistory} from 'history';
+import {connectRouter, routerMiddleware} from 'connected-react-router';
+import {applyMiddleware, combineReducers, compose, createStore} from 'redux';
+import {Provider} from 'react-redux';
+import thunk from 'redux-thunk';
+import userReducer from "./store/reducers/userReducer";
+import store from "./store/store";
+import {history} from "./store/store";
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <Provider store={store}>
+      <App history={history}/>
+    </Provider>
   </React.StrictMode>,
   document.getElementById('root')
 );

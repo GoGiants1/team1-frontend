@@ -1,6 +1,7 @@
 //컴퍼넌트 구현
 import { useEffect } from 'react'
 import apis from '../../Apis' 
+import Header from '../Header/Header'
 
 const Posts = () => {
 	useEffect(() => {
@@ -8,7 +9,17 @@ const Posts = () => {
 			.then()
 			.catch()
 	}, [])
-	return <p>포스트 컴포넌트</p>
+	return (
+		<div className="app">
+			{/* Header */}
+			<Header/>
+
+			{/* App body */}
+				{/* sidebar */}
+				{/* Feed */}
+				{/* widget */}
+		</div>
+	)
 }
 
 export default Posts

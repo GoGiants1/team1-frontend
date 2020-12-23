@@ -1,10 +1,24 @@
 import { routes } from './Routes'
 import { Switch, Route, Redirect } from 'react-router-dom'
 import { ConnectedRouter } from 'connected-react-router';
-
+import Header from './Components/Header/Header'
+import Sidebar from './Components/Sidebar/Sidebar'
 function App({history}) {
   return (
+    <div className="app">
     <ConnectedRouter history={history}>
+      <Header/>
+			
+			{/* App body */}
+				<div className="app_body">
+          <Sidebar />
+        </div>
+        {/* sidebar */}
+				{/* Feed */}
+				{/* widget */}
+
+
+
       <Switch>
         <Route path={routes.users.path} component={routes.users.component} />
         <Route path={routes.posts.path} component={routes.posts.component} />
@@ -15,6 +29,7 @@ function App({history}) {
         <Redirect from='/' to={routes.users.path} />
       </Switch>
     </ConnectedRouter>
+    </div>
   );
 }
 

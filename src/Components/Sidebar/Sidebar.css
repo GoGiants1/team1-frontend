@@ -54,6 +54,17 @@
     text-align: left;
 }
 
+.sidebar_text:hover {
+    cursor: pointer;
+    background-color: whitesmoke;
+}
+
+.sidebar_text2:hover {
+    cursor: pointer;
+    background-color: whitesmoke;
+}
+
+
 .sidebar_text_icon {
     margin-right: 10px;
     align-items: center;

@@ -8,7 +8,8 @@ import ShareOutlinedIcon from '@material-ui/icons/ShareOutlined';
 import SendOutlinedIcon from '@material-ui/icons/SendOutlined';
 import InputOption from '../Feed/InputOption'
 
-const Post = ({name, description, updatedAt, message,photoUrl}) => {
+import MoreButton from './MoreButton'
+const Post = ({id,name, description, updatedAt, message,photoUrl}) => {
 	useEffect(() => {
 		apis.posts.getAll()
 			.then()
@@ -24,6 +25,10 @@ const Post = ({name, description, updatedAt, message,photoUrl}) => {
 					<h2>{name}</h2>
 					<p>{description}</p>
 					<p>{updatedAt}</p>
+				</div>
+
+				<div className="post_modify">
+					<MoreButton id={id} />
 				</div>
 			</div>
 

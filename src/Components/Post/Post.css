@@ -8,10 +8,16 @@
 .post_header{
     display: flex;
     margin-bottom: 10px;
+    vertical-align: baseline;
+}
+.post_modify {
+    vertical-align: top;
+    display: block;
 }
 
 .post_info {
     margin-left: 10px;
+    width: 100%;
 }
 
 .post_info > p {

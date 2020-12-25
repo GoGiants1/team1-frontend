@@ -9,7 +9,6 @@ import apis from "../../Apis"
 import InputOption from './InputOption'
 import Post from '../Post/Post'
 
-
 // Todo: 
 // 1. 게시글 작성 기능(API 연동)
 // 2. 무한 스크롤(pagination)
@@ -17,46 +16,91 @@ import Post from '../Post/Post'
 
 function Feed() {
     const [input, setInput] = useState('');
-    const [count, setCount] = useState('');
+    const [fetching, setFetching] = useState(false);
     const [posts, setPosts] = useState([]);
+    const [pageNumber,setPageNumber] = useState(1);
+    const [nextLink, setNextLink] = useState(null);
+    const [count, setCount] = useState();
+    
+
 
     useEffect(() =>{
-        apis.posts.getAll().then((res) =>{
-            setPosts(res.data.results);
-            setCount(res.data.count);
+        setFetching(true)
+        apis.posts.getAll(pageNumber).then((res) =>{
+            setPosts(prev => [...prev, ...res.data.results]);
+            setNextLink(res.data.next)
+            setCount(res.data.count)
             console.log(res);
             console.log(res.data);
-            console.log(res.data.count);
-
+            console.log(res.data.next);
         })
-    },[])
+        setFetching(false)
+    },[pageNumber])
+
+//     const fetchPosts = () => {
+//         if(nextLink && pageNumber){
+//             setFetching(true)
+//             setPageNumber(prev => prev +1 )
+//             apis.posts.getAll(pageNumber).then((res) =>{
+//                 setPosts(prev => [...prev, ...res.data.results]);
+//                 setNextLink(res.data.next);
+//                 const more = (res.data.next !== null)
+//                 console.log(res);
+//                 console.log(res.data);
+//                 console.log(res.data.next);
+//             })
+//             setFetching(false)
+//         }
+// }
+
     
-    console.log(posts)
+    // console.log(posts)
 
     const sendPost= (e) => {
         e.preventDefault();
         
-        apis.posts.post({
+        const newPost = {
             title:"임시 타이틀",
             content: input,
             userId:1,
-            userFirstName:"스트형",
-            userLastName:"테",
-        })
-        
+        }
+        // 글 올린 다음 새로운 글 추가 (맨 마지막 페이지일 경우에만.)
+        apis.posts.post(newPost).then(res=> {
+            if(posts.length === count){
+                setPosts(prev => [...prev, res.data])
+                setCount(prev => prev + 1)
+            }
+        })    
+        setInput("")
     }
 
 
-    // const { results: postList, count: PageCount } = posts;
+
+    const handleScroll = () => {
+        const scrollHeight = Math.max(document.documentElement.scrollHeight, document.body.scrollHeight);
+        const scrollTop = Math.max(document.documentElement.scrollTop, document.body.scrollTop);
+        const clientHeight = document.documentElement.clientHeight
+        if (scrollTop + clientHeight >= scrollHeight - 1 && fetching === false && nextLink ) {
+            setPageNumber(prev => prev +1 )
+        }
+    };
+  
+    useEffect(() => {
+        window.addEventListener('scroll', handleScroll)
+        return () => {
+            window.removeEventListener('scroll', handleScroll)
+        }
+    })
+  
 
     return (
         <div className="feed">
             <div className="feed_inputContainer">
                 <div className="feed_input">
                     <CreateIcon/>
-                    <form>
+                    <form onSubmit={sendPost}>
                         <input value={input} onChange={e=> setInput(e.target.value)} type="text" placeholder="글 올리기"/>
-                        <button onClick={sendPost} type="submit">작성</button>
+                        {/* <button type="submit">작성</button> */}
                     </form>
                 </div>
                 <div className="feed_inputOptions">
@@ -66,29 +110,18 @@ function Feed() {
                     <InputOption Icon={CalendarViewDayIcon} title='글쓰기' color='#f5987e'/>
                 </div>
             </div>
-            {posts.map(({title, content, createdAt, updatedAt,userId,userFirstName,userLastName}) =>(
-                <Post 
-                    name={'익명'} 
-                    description={'와플스튜디오'}
-                    updatedAt={updatedAt}
-                    message={content}
-                    photoUrl="https://avatars2.githubusercontent.com/u/69342392?s=460&u=5f00d9ea3cb8d134035a30cf78ca0e9a29f6e522&v=4"
-                />
-            ))}
-            {/* <Post name='최형욱' description='서울대학교' message='hi' photoUrl="https://avatars2.githubusercontent.com/u/69342392?s=460&u=5f00d9ea3cb8d134035a30cf78ca0e9a29f6e522&v=4" />
-            <Post name='최형욱' description='서울대학교' message='hi' photoUrl="https://avatars2.githubusercontent.com/u/69342392?s=460&u=5f00d9ea3cb8d134035a30cf78ca0e9a29f6e522&v=4" />
-            <Post name='최형욱' description='서울대학교' message='hi' photoUrl="https://avatars2.githubusercontent.com/u/69342392?s=460&u=5f00d9ea3cb8d134035a30cf78ca0e9a29f6e522&v=4" />
-            <Post name='최형욱' description='서울대학교' message='hi' photoUrl="https://avatars2.githubusercontent.com/u/69342392?s=460&u=5f00d9ea3cb8d134035a30cf78ca0e9a29f6e522&v=4" />
-            <Post name='최형욱' description='서울대학교' message='hi' photoUrl="https://avatars2.githubusercontent.com/u/69342392?s=460&u=5f00d9ea3cb8d134035a30cf78ca0e9a29f6e522&v=4" />
-            <Post name='최형욱' description='서울대학교' message='hi' photoUrl="https://avatars2.githubusercontent.com/u/69342392?s=460&u=5f00d9ea3cb8d134035a30cf78ca0e9a29f6e522&v=4" />
-            <Post name='최형욱' description='서울대학교' message='hi' photoUrl="https://avatars2.githubusercontent.com/u/69342392?s=460&u=5f00d9ea3cb8d134035a30cf78ca0e9a29f6e522&v=4" />
-            <Post name='최형욱' description='서울대학교' message='hi' photoUrl="https://avatars2.githubusercontent.com/u/69342392?s=460&u=5f00d9ea3cb8d134035a30cf78ca0e9a29f6e522&v=4" />
-            <Post name='최형욱' description='서울대학교' message='hi' photoUrl="https://avatars2.githubusercontent.com/u/69342392?s=460&u=5f00d9ea3cb8d134035a30cf78ca0e9a29f6e522&v=4" />
-            <Post name='최형욱' description='서울대학교' message='hi' photoUrl="https://avatars2.githubusercontent.com/u/69342392?s=460&u=5f00d9ea3cb8d134035a30cf78ca0e9a29f6e522&v=4" />
-            <Post name='최형욱' description='서울대학교' message='hi' photoUrl="https://avatars2.githubusercontent.com/u/69342392?s=460&u=5f00d9ea3cb8d134035a30cf78ca0e9a29f6e522&v=4" />
-            <Post name='최형욱' description='서울대학교' message='hi' photoUrl="https://avatars2.githubusercontent.com/u/69342392?s=460&u=5f00d9ea3cb8d134035a30cf78ca0e9a29f6e522&v=4" />
-            <Post name='최형욱' description='서울대학교' message='hi' photoUrl="https://avatars2.githubusercontent.com/u/69342392?s=460&u=5f00d9ea3cb8d134035a30cf78ca0e9a29f6e522&v=4" /> */}
-            
+
+                {posts.map(({id,title, content, createdAt, updatedAt,userId,userFirstName,userLastName}) =>(
+                    <Post
+                        key={id}
+                        id={id}
+                        name={'익명'} 
+                        description={'와플스튜디오'}
+                        updatedAt={updatedAt}
+                        message={content}
+                        photoUrl="https://avatars2.githubusercontent.com/u/69342392?s=460&u=5f00d9ea3cb8d134035a30cf78ca0e9a29f6e522&v=4"
+                    />
+                ))}
         </div>
     )
 }

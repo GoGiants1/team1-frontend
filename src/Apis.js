@@ -35,14 +35,17 @@ const apis = {
 		}
 	},
 	posts: {
-		getAll: () => {
-			return requester.get('posts/')
+		getAll: async (num) => {
+			return await requester.get(`posts/?page=${num}`)
 		},
 		get: (id) => {
 			return requester.get(`posts/${id}/`)
 		},
 		post: (newPost) => {
 			return requester.post('posts/', newPost)
+		},
+		delete: (id) => {
+			return requester.delete(`posts/${id}/`)
 		}
 
 		//위처럼 필요한 것 적으면 됩니다.

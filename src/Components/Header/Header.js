@@ -1,6 +1,6 @@
 import React from 'react'
 import './Header.css'
-import {SearchOutlined } from '@ant-design/icons'
+import SearchIcon from '@material-ui/icons/Search';
 import PeopleIcon from '@material-ui/icons/People';
 import HomeIcon from '@material-ui/icons/Home' ;
 import WorkIcon from '@material-ui/icons/Work';
@@ -18,7 +18,7 @@ function Header() {
                 
                 <div className="header_search">
                     {/* Search icon */}
-                    <SearchOutlined />
+                    <SearchIcon />
                     <input type="text"/>
 
                 </div>

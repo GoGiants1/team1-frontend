@@ -8,20 +8,22 @@ import ShareOutlinedIcon from '@material-ui/icons/ShareOutlined';
 import SendOutlinedIcon from '@material-ui/icons/SendOutlined';
 import InputOption from '../Feed/InputOption'
 
-const Post = ({name, description, message,photoUrl}) => {
+const Post = ({name, description, updatedAt, message,photoUrl}) => {
 	useEffect(() => {
 		apis.posts.getAll()
 			.then()
-			.catch()
+            .catch()
+            
 	}, [])
 	return (
 		<div className="post">
 			<div className="post_header">
 				<Avatar src={photoUrl}/>
-                
+
 				<div className="post_info">
 					<h2>{name}</h2>
 					<p>{description}</p>
+					<p>{updatedAt}</p>
 				</div>
 			</div>
 

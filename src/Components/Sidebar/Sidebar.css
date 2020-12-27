@@ -1,0 +1,119 @@
+.sidebar {
+    position: sticky;
+    top: 80px;
+    flex: 0.2;
+    border-radius: 10px;
+    text-align: center;
+    height: fit-content;
+}
+
+.sidebar_avatar {
+    margin-bottom: 10px;
+}
+
+.sidebar_top {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 1px solid lightgray;
+    border-bottom: 0;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    background-color: white;
+    padding-bottom: 10px;
+    
+}
+.sidebar_top > img {
+    margin-bottom: -20px;
+    width: 100%;
+    height: 60px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    object-fit: cover;
+}
+
+.sidebar_top > h4 {
+    color: gray;
+    font-size: 12px;
+}
+
+.sidebar_top > h2 {
+    font-size: 10px;
+}
+
+.sidebar_text {
+    margin-top: 10px;
+    display: flex;
+    text-align: left;
+}
+
+.sidebar_text2 {
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-between;
+    text-align: left;
+}
+
+.sidebar_text:hover {
+    cursor: pointer;
+    background-color: whitesmoke;
+}
+
+.sidebar_text2:hover {
+    cursor: pointer;
+    background-color: whitesmoke;
+}
+
+
+.sidebar_text_icon {
+    margin-right: 10px;
+    align-items: center;
+}
+
+.sidebar_text > p {
+    color: gray;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.sidebar_texts {
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid lightgray;
+    background-color: white;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+.sidebar_textDescription {
+    font-weight: bold;
+    color: black !important;
+}
+
+.sidebar_bottom {
+    text-align: left;
+    padding: 10px;
+    border: 1px solid lightgray;
+    background-color: white;
+    border-radius: 10px;
+    margin-top: 10px;
+}
+
+
+.sidebar_bottomItem{
+    display: flex;
+    font-size: 13.5px;
+    color: #0073b1;
+    font-weight: bolder;
+    cursor:pointer;
+    margin-bottom: 5px;
+    padding: 5px;
+    text-align: left;
+}
+
+.sidebar_bottomItem:hover{
+    text-decoration: underline;
+    border-radius: 10px;
+    cursor: pointer;
+    color: black;
+}

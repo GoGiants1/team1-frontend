@@ -173,3 +173,4 @@ $RECYCLE.BIN/
 .eslintcache
 
 # End of https://www.toptal.com/developers/gitignore/api/macos,windows,webstorm+all,vscode,react
+.eslintcache

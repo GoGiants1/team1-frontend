@@ -9,13 +9,7 @@ import SendOutlinedIcon from '@material-ui/icons/SendOutlined';
 import InputOption from '../Feed/InputOption'
 
 import MoreButton from './MoreButton'
-const Post = ({id,name, description, updatedAt, message,photoUrl}) => {
-	useEffect(() => {
-		apis.posts.getAll()
-			.then()
-            .catch()
-            
-	}, [])
+const Post = ({id,name,modified, userSchool, userCompany, updatedAt, message,photoUrl}) => {
 	return (
 		<div className="post">
 			<div className="post_header">
@@ -23,8 +17,8 @@ const Post = ({id,name, description, updatedAt, message,photoUrl}) => {
 
 				<div className="post_info">
 					<h2>{name}</h2>
-					<p>{description}</p>
-					<p>{updatedAt}</p>
+					{userCompany ? <p>{userCompany}</p> : <p>{userSchool}</p>} 
+					<p>{updatedAt} {modified && <p>수정됨</p>}</p>
 				</div>
 
 				<div className="post_modify">

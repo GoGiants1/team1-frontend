@@ -25,7 +25,6 @@ function Feed() {
 
 
     useEffect(() =>{
-        setFetching(true)
         apis.posts.getAll(pageNumber).then((res) =>{
             setPosts(prev => [...prev, ...res.data.results]);
             setNextLink(res.data.next)
@@ -81,6 +80,7 @@ function Feed() {
         const scrollTop = Math.max(document.documentElement.scrollTop, document.body.scrollTop);
         const clientHeight = document.documentElement.clientHeight
         if (scrollTop + clientHeight >= scrollHeight - 1 && fetching === false && nextLink ) {
+            setFetching(true)
             setPageNumber(prev => prev +1 )
         }
     };
@@ -111,13 +111,16 @@ function Feed() {
                 </div>
             </div>
 
-                {posts.map(({id,title, content, createdAt, updatedAt,userId,userFirstName,userLastName}) =>(
+                {posts.map(({id, content, createdAt, updatedAt,modified, userId,userFirstName,userLastName,userSchool,userCompany}) =>(
                     <Post
                         key={id}
                         id={id}
                         name={'익명'} 
-                        description={'와플스튜디오'}
+
+                        userSchool={userSchool}
+                        userCompany={userCompany}
                         updatedAt={updatedAt}
+                        modified={modified}
                         message={content}
                         photoUrl="https://avatars2.githubusercontent.com/u/69342392?s=460&u=5f00d9ea3cb8d134035a30cf78ca0e9a29f6e522&v=4"
                     />

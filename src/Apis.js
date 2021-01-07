@@ -13,9 +13,9 @@ const requester = axios.create({
 
 const apis = {
 	token: {
-		update: async () => {
-		const result = await requester.get('user/me/profile/')
-		requester.defaults.headers.common['Authorization'] = `Token ${result.data.token}`
+		update: async (token) => {
+			requester.defaults.headers.common['Authorization'] = `Token ${token}`
+			return await requester.get('user/me/profile/')
 		},
 		delete: async () => {
 			await delete requester.defaults.headers.common['Authorization']
@@ -87,16 +87,16 @@ const apis = {
 				delete requester.defaults.headers.common['Authorization']
 				const result = await requester.put('user/login/', { email,password})
 				requester.defaults.headers.common['Authorization'] = `Token ${result.data.token}`
+				storage.set('token', result.data.token)
 				console.log('일반로그인 토큰', result.data)
 			}catch(error){
 				alert(JSON.stringify(error.response.data))
 				throw error
 			}
 		},
-		// logout: async () => {
-		// 	delete requester.defaults.headers.common['Authorization']
-		// 	return await 
-		// },
+		logout: async () => {
+			await delete requester.defaults.headers.common['Authorization']
+		},
 		responseGoogle : async (response) => {
 			try{
 				// 소셜로그인 API 엔드포인트

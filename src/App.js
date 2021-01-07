@@ -1,6 +1,6 @@
 import './App.css';
 import React,{useEffect} from 'react';
-
+import apis from './Apis'
 import { routes } from './Routes';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import { ConnectedRouter } from 'connected-react-router';
@@ -8,10 +8,38 @@ import { useSelector } from 'react-redux';
 import { selectUser, selectSignupRequest } from './feature/userSlice';
 import LoginPage from './Pages/Login/Login';
 import SignUpPage from './Pages/SignUp/SignUp';
+import {useDispatch} from 'react-redux';
+import {login, logout} from './feature/userSlice';
+import storage from './lib/storage'
+
+
 
 function App({history}) {
   const user = useSelector(selectUser);
   const signUpRequest = useSelector(selectSignupRequest)
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const loggedInfo = storage.get('token')
+    console.log('로그인 톸',loggedInfo)
+    if(loggedInfo){
+      apis.token.update(loggedInfo).then( res=> {
+          dispatch(login(res.data))
+          history.replace('/posts')
+        })
+    } else{return}
+    apis.user.getMyProfile((authUser) => {
+      if (authUser) {
+        dispatch(
+          login({
+            authUser
+          })
+        );
+      } else {
+        history.push('/login')
+      }
+    });
+  }, [dispatch]);
 
   return (
     <ConnectedRouter history={history}>

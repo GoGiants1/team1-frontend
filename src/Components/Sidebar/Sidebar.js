@@ -4,9 +4,11 @@ import {Avatar} from "@material-ui/core"
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import CardGiftcardIcon from '@material-ui/icons/CardGiftcard';
 import BookmarkIcon from '@material-ui/icons/Bookmark';
-
+import { useSelector } from 'react-redux';
+import { selectUser } from '../../feature/userSlice';
 function Sidebar() {
-
+    const user = useSelector(selectUser);
+    const korean = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
     const bottomItem = (topic) =>(
         <div className="sidebar_bottomItem">
             <p>{topic}</p>
@@ -18,8 +20,13 @@ function Sidebar() {
             <div className="sidebar_top">
                 <img src="https://images.unsplash.com/photo-1579546929518-9e396f3cc809?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxleHBsb3JlLWZlZWR8MXx8fGVufDB8fHw%3D&w=1000&q=80" alt=""/>
                 <Avatar className="sidebar_avatar"  src={"https://avatars2.githubusercontent.com/u/69342392?s=460&u=5f00d9ea3cb8d134035a30cf78ca0e9a29f6e522&v=4"}/>
-                <h2>최형욱</h2>
-                <h4>서울대학교 학생</h4>
+                <h2>{korean.test(user.lastName) ?   user.lastName + user.firstName: user.firstName +' '+ user.lastName}</h2>
+                <h4>{        user.company.length === 0 
+                            ?   (user.school.length === 0  
+                                ?   (user.region) 
+                                :   (user.school[user.school.length - 1].schoolName) ) 
+                            :   (user.company[ user.company.length - 1].companyName)
+                }</h4>
             </div>
 
             <div className="sidebar_texts">

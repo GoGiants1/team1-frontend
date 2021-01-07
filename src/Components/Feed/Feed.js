@@ -8,11 +8,15 @@ import CalendarViewDayIcon from "@material-ui/icons/CalendarViewDay";
 import apis from "../../Apis"
 import InputOption from './InputOption'
 import Post from '../Post/Post'
+import {useHistory} from 'react-router-dom';
+import {useDispatch} from 'react-redux';
+import { useSelector } from 'react-redux';
+import { selectUser } from '../../feature/userSlice';
+
+
 
 // Todo: 
-// 1. 게시글 작성 기능(API 연동)
-// 2. 무한 스크롤(pagination)
-// 3. 오른쪽 widget (APP.js에 구현 필요.)
+// 3. 오른쪽 widget (Page/Posts.js에 구현 필요.)
 
 function Feed() {
     const [input, setInput] = useState('');
@@ -21,11 +25,12 @@ function Feed() {
     const [pageNumber,setPageNumber] = useState(1);
     const [nextLink, setNextLink] = useState(null);
     const [count, setCount] = useState();
-    
+    const history = useHistory();
+	const dispatch = useDispatch();
+	const user = useSelector(selectUser);
 
 
     useEffect(() =>{
-        setFetching(true)
         apis.posts.getAll(pageNumber).then((res) =>{
             setPosts(prev => [...prev, ...res.data.results]);
             setNextLink(res.data.next)
@@ -37,32 +42,15 @@ function Feed() {
         setFetching(false)
     },[pageNumber])
 
-//     const fetchPosts = () => {
-//         if(nextLink && pageNumber){
-//             setFetching(true)
-//             setPageNumber(prev => prev +1 )
-//             apis.posts.getAll(pageNumber).then((res) =>{
-//                 setPosts(prev => [...prev, ...res.data.results]);
-//                 setNextLink(res.data.next);
-//                 const more = (res.data.next !== null)
-//                 console.log(res);
-//                 console.log(res.data);
-//                 console.log(res.data.next);
-//             })
-//             setFetching(false)
-//         }
-// }
-
-    
-    // console.log(posts)
 
     const sendPost= (e) => {
         e.preventDefault();
         
         const newPost = {
-            title:"임시 타이틀",
             content: input,
-            userId:1,
+            userId: user.id,
+            userFirstName: user.firstName,
+            userLastName: user.lastName,
         }
         // 글 올린 다음 새로운 글 추가 (맨 마지막 페이지일 경우에만.)
         apis.posts.post(newPost).then(res=> {
@@ -81,6 +69,7 @@ function Feed() {
         const scrollTop = Math.max(document.documentElement.scrollTop, document.body.scrollTop);
         const clientHeight = document.documentElement.clientHeight
         if (scrollTop + clientHeight >= scrollHeight - 1 && fetching === false && nextLink ) {
+            setFetching(true)
             setPageNumber(prev => prev +1 )
         }
     };
@@ -111,15 +100,19 @@ function Feed() {
                 </div>
             </div>
 
-                {posts.map(({id,title, content, createdAt, updatedAt,userId,userFirstName,userLastName}) =>(
+                {posts.map(({id, content, createdAt, updatedAt,modified, userId,userFirstName,userLastName,userSchool,userCompany}) =>(
                     <Post
                         key={id}
                         id={id}
-                        name={'익명'} 
-                        description={'와플스튜디오'}
+                        name={userFirstName + userLastName} 
+
+                        userSchool={userSchool}
+                        userCompany={userCompany}
                         updatedAt={updatedAt}
+                        modified={modified}
                         message={content}
-                        photoUrl="https://avatars2.githubusercontent.com/u/69342392?s=460&u=5f00d9ea3cb8d134035a30cf78ca0e9a29f6e522&v=4"
+                        // photoUrl="https://avatars2.githubusercontent.com/u/69342392?s=460&u=5f00d9ea3cb8d134035a30cf78ca0e9a29f6e522&v=4"
+                        photoUrl="https://lh4.googleusercontent.com/-an8RZgHHA80/AAAAAAAAAAI/AAAAAAAAAAA/AMZuuclrry1Tr0lhFgu0ggEqSbQ2ZuB7Yg/s96-c/photo.jpg"
                     />
                 ))}
         </div>

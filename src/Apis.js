@@ -8,7 +8,7 @@ axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
 axios.defaults.headers.common['Authorization'] = `Token ${token}`;
 const requester = axios.create({
-	baseURL: 'http://clone-linkedin.com/'
+	baseURL: 'http://13.209.8.137/'
 })
 
 const apis = {
@@ -83,14 +83,15 @@ const apis = {
 			email,
 			password
 		}) => {
-			delete requester.defaults.headers.common['Authorization']
-			const result = await requester.put('user/login/', {
-				email,
-				password
-			})
-			requester.defaults.headers.common['Authorization'] = `Token ${result.data.token}`
-			console.log('일반로그인 토큰', result.data)
-			
+			try{
+				delete requester.defaults.headers.common['Authorization']
+				const result = await requester.put('user/login/', { email,password})
+				requester.defaults.headers.common['Authorization'] = `Token ${result.data.token}`
+				console.log('일반로그인 토큰', result.data)
+			}catch(error){
+				alert(JSON.stringify(error.response.data))
+				throw error
+			}
 		},
 		// logout: async () => {
 		// 	delete requester.defaults.headers.common['Authorization']
@@ -134,6 +135,9 @@ const apis = {
 	posts: {
 		getAll: async (num) => {
 			return await requester.get(`posts/?page=${num}`)
+		},
+		getAllLatest: async (num) => {
+			return await requester.get(`posts/?order=latest&page=${num}`)
 		},
 		get: async (id) => {
 			return await requester.get(`posts/${id}/`)

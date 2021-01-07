@@ -55,7 +55,7 @@ const Login = () => {
 
 	const handleSocialLogin = async (response) => {
 		await apis.user.responseGoogle(response)
-
+		
 		apis.user.getMyProfile().then(res=> {
 			console.log('로그인 한 사람',res)
 			alert('이미 회원이시군요!')

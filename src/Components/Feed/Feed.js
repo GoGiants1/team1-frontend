@@ -24,22 +24,27 @@ function Feed() {
     const [posts, setPosts] = useState([]);
     const [pageNumber,setPageNumber] = useState(1);
     const [nextLink, setNextLink] = useState(null);
+    const [nextPostId, setNextPostId] = useState(-1);
     const [count, setCount] = useState();
     const history = useHistory();
 	const dispatch = useDispatch();
 	const user = useSelector(selectUser);
 
-
     useEffect(() =>{
-        apis.posts.getAll(pageNumber).then((res) =>{
-            setPosts(prev => [...prev, ...res.data.results]);
+        apis.posts.getAllLatest(pageNumber).then((res) =>{
+            setPosts(
+                prev => [...prev, ...res.data.results.filter((post) => (post.id < nextPostId || nextPostId === -1 ))]
+            )
+            setNextPostId(res.data.results[res.data.results.length - 1].id)
             setNextLink(res.data.next)
             setCount(res.data.count)
             console.log(res);
             console.log(res.data);
-            console.log(res.data.next);
-        })
+            console.log(res.data.next);    
+        })       
         setFetching(false)
+        console.log('NextPostId',nextPostId)
+        console.log(posts)
     },[pageNumber])
 
 
@@ -54,10 +59,9 @@ function Feed() {
         }
         // 글 올린 다음 새로운 글 추가 (맨 마지막 페이지일 경우에만.)
         apis.posts.post(newPost).then(res=> {
-            if(posts.length === count){
-                setPosts(prev => [...prev, res.data])
+                setPosts(prev => [ res.data ,...prev]) // 최신순으로 정렬된 경우 수정 필요 
                 setCount(prev => prev + 1)
-            }
+            
         })    
         setInput("")
     }
@@ -115,6 +119,7 @@ function Feed() {
                         photoUrl="https://lh4.googleusercontent.com/-an8RZgHHA80/AAAAAAAAAAI/AAAAAAAAAAA/AMZuuclrry1Tr0lhFgu0ggEqSbQ2ZuB7Yg/s96-c/photo.jpg"
                     />
                 ))}
+                {fetching ? 'Loading...' : null}
         </div>
     )
 }

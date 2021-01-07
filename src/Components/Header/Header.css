@@ -41,5 +41,8 @@
 
 .header_right {
     display: flex;
+}
 
+.header_right > p {
+    vertical-align: middle;
 }

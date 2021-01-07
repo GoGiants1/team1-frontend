@@ -36,12 +36,16 @@ const Login = () => {
 		setEmailError(validateEmail(email) ? false : true)
 		setPasswordError(password.length < 6 ? true : false)
 		if(!emailError && !passwordError){
-			await apis.user.login({userEmail: email, password: password})
-			.catch(error => alert(JSON.stringify(error.response.data)))
+			await apis.user.login({email: email, password: password})
+			
+			apis.user.getMyProfile().then(res => {
+					console.log('로그인 한 사람',res)
+					dispatch(login(res.data))
+					history.push('/posts')
+				})
+			// .catch(error => alert(JSON.stringify(error.response.data)))
 
-			// apis.user.getMyProfile().then(res => {
-			// 	console.log('로그인 한 사람',res)
-			// })
+		
 		}
 	}
 	const jumpToSignUp = () => {

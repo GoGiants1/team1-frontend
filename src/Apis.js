@@ -80,18 +80,22 @@ const apis = {
 			})
 		},
 		login: async ({
-			userEmail,
+			email,
 			password
 		}) => {
 			delete requester.defaults.headers.common['Authorization']
-			return await requester.put('user/login/', {
-				userEmail,
+			const result = await requester.put('user/login/', {
+				email,
 				password
-			}).then(res=>{
-				requester.defaults.headers.common['Authorization'] = `Token ${res.data.token}`
-				console.log('일반로그인 토큰', res.data)
 			})
+			requester.defaults.headers.common['Authorization'] = `Token ${result.data.token}`
+			console.log('일반로그인 토큰', result.data)
+			
 		},
+		// logout: async () => {
+		// 	delete requester.defaults.headers.common['Authorization']
+		// 	return await 
+		// },
 		responseGoogle : async (response) => {
 			try{
 				// 소셜로그인 API 엔드포인트

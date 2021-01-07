@@ -19,7 +19,7 @@ function Header() {
                 <div className="header_search">
                     {/* Search icon */}
                     <SearchIcon />
-                    <input type="text"/>
+                    <input placeholder='검색' type="text"/>
 
                 </div>
             </div>

@@ -2,12 +2,12 @@ import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
 import { connectRouter, routerMiddleware } from 'connected-react-router';
 import { createBrowserHistory } from 'history';
-import userReducer from "./reducers/userReducer";
+import userReducer from "../feature/userSlice"; // redux-toolkit 적용하면서 수정됨
 
 export const history = createBrowserHistory();
 
 const rootReducer = combineReducers({
-  users: userReducer,
+  user: userReducer,
   // posts: postReducer,
   router: connectRouter(history),
 });
@@ -24,3 +24,17 @@ const store = createStore(
 );
 
 export default store;
+
+
+// import {configureStore} from '@reduxjs/toolkit';
+// import userReducer from "../feature/userSlice";
+// import { createBrowserHistory } from 'history';
+
+// export const history = createBrowserHistory();
+
+
+// export default configureStore({
+//   reducer:{
+//     user: userReducer
+//   },
+// })

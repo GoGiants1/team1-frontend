@@ -1,5 +1,3 @@
-import { useEffect } from 'react'
-import apis from '../../Apis' 
 import './Post.css'
 import {Avatar} from "@material-ui/core"
 import ThumbUpAltOutlinedIcon from '@material-ui/icons/ThumbUpAltOutlined';

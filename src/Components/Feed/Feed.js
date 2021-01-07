@@ -104,7 +104,7 @@ function Feed() {
                 </div>
             </div>
 
-                {posts.map(({id, content, createdAt, updatedAt,modified, userId,userFirstName,userLastName,userSchool,userCompany}) =>(
+                {posts.map(({id, content, createdAt, updatedAt,modified, userId,userFirstName,userLastName,userSchool,userCompany, photoUrl}) =>(
                     <Post
                         key={id}
                         id={id}
@@ -115,8 +115,7 @@ function Feed() {
                         updatedAt={updatedAt}
                         modified={modified}
                         message={content}
-                        // photoUrl="https://avatars2.githubusercontent.com/u/69342392?s=460&u=5f00d9ea3cb8d134035a30cf78ca0e9a29f6e522&v=4"
-                        photoUrl="https://lh4.googleusercontent.com/-an8RZgHHA80/AAAAAAAAAAI/AAAAAAAAAAA/AMZuuclrry1Tr0lhFgu0ggEqSbQ2ZuB7Yg/s96-c/photo.jpg"
+                        photoUrl={photoUrl}
                     />
                 ))}
                 {fetching ? 'Loading...' : null}

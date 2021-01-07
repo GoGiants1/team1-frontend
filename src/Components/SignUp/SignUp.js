@@ -98,10 +98,11 @@ const SignUp = () => {
 
 		apis.user.getMyProfile().then(res=> {
 			console.log('로그인 한 사람',res)
-			alert('이미 회원가입을 하셨습니다. 로그인 페이지로 이동합니다')
+			alert('이미 회원가입을 하셨습니다. 로그인을 진행합니다')
 			dispatch(signUpRequest(false))
-			dispatch(signUpSecondStep(false))	
-			history.push('/login')
+			dispatch(signUpSecondStep(false))
+			dispatch(login(res.data))	
+			history.push('/posts')
 		}).catch(error => {
 			alert('다음 단계로 이동합니다.')
 			dispatch(signUpSecondStep(true))

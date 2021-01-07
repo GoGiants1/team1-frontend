@@ -99,10 +99,7 @@ const apis = {
 		},
 		responseGoogle : async (response) => {
 			try{
-				// 소셜로그인 API 엔드포인트
-				// const url = 'social/login/'
-			
-				// 장고서버에 로셜로그인 호출 (response.tokenId 사용)
+				
 				console.log('google response: ', response);
 				const newToken = response.tokenId
 				storage.set('token', newToken);
@@ -121,6 +118,7 @@ const apis = {
 				console.log('리퀘스터 디폴트:', requester.defaults)
 				const result = await requester.post('social/login/', request)
 				requester.defaults.headers.common['Authorization'] = `Token ${result.data.token}`
+				storage.set('token',result.data.token)
 				console.log('logintoken:', result.data)
 				requester.get('user/').then(res=> console.log('유저 겟', res))
 				}catch(error) {

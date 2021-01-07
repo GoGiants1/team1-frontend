@@ -88,38 +88,24 @@ const apis = {
 				const result = await requester.put('user/login/', { email,password})
 				requester.defaults.headers.common['Authorization'] = `Token ${result.data.token}`
 				storage.set('token', result.data.token)
-				console.log('일반로그인 토큰', result.data)
 			}catch(error){
 				alert(JSON.stringify(error.response.data))
 				throw error
 			}
 		},
 		logout: async () => {
-			await delete requester.defaults.headers.common['Authorization']
+			await requester.post('user/logout/')
+			delete requester.defaults.headers.common['Authorization']
 		},
 		responseGoogle : async (response) => {
 			try{
-				
-				console.log('google response: ', response);
-				const newToken = response.tokenId
-				storage.set('token', newToken);
-				console.log('newtoken:', newToken);
-				console.log('token: ', response.tokenId)
-				
-				console.log('스토리지 토큰:', storage.get('token'));
 				const request = {
 				tokenId: response.tokenId,
 				};
-	
-				// 로그인토큰 : result.data.token
 				delete requester.defaults.headers.common['Authorization'];
-				
-				console.log('axios:', axios.defaults.headers.common['Authorization'])
-				console.log('리퀘스터 디폴트:', requester.defaults)
 				const result = await requester.post('social/login/', request)
 				requester.defaults.headers.common['Authorization'] = `Token ${result.data.token}`
 				storage.set('token',result.data.token)
-				console.log('logintoken:', result.data)
 				requester.get('user/').then(res=> console.log('유저 겟', res))
 				}catch(error) {
 					alert(JSON.stringify(error.response.data))
@@ -147,7 +133,6 @@ const apis = {
 			return await requester.delete(`posts/${id}/`)
 		}
 
-		//위처럼 필요한 것 적으면 됩니다.
 	},
 	comments: {
 		post: async (post_id,comment) => {

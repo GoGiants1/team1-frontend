@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit"
+import apis from "../Apis";
 
 export const userSlice = createSlice({
     name: "user",
@@ -12,6 +13,7 @@ export const userSlice = createSlice({
         state.user = action.payload;
       },
       logout: (state) => {
+        apis.user.logout()
         state.user = null;
       },
       signUpRequest: (state, action) => {

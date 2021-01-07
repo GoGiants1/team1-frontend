@@ -21,7 +21,6 @@ function App({history}) {
 
   useEffect(() => {
     const loggedInfo = storage.get('token')
-    // console.log('로그인 톸',loggedInfo)
     if(loggedInfo){
       apis.token.update(loggedInfo).then( res=> {
           dispatch(login(res.data))

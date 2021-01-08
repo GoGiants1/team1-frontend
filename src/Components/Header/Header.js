@@ -7,7 +7,26 @@ import WorkIcon from '@material-ui/icons/Work';
 import SmsIcon from '@material-ui/icons/Sms';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import HeaderOption from './HeaderOption'
+import Button from '@material-ui/core/Button';
+
+import storage from '../../lib/storage'
+import {useHistory} from 'react-router-dom';
+import {useDispatch} from 'react-redux';
+import { login, logout } from '../../feature/userSlice';
+import { useSelector } from 'react-redux';
+import { selectUser } from '../../feature/userSlice';
+
+
 function Header() {
+    const history = useHistory();
+	const dispatch = useDispatch();
+
+    const handleLogout = () => {
+        storage.remove('token')
+        dispatch(logout())
+        history.push('/login')
+    }
+
     return (
         <div className='header'>
             <div className="header_left">
@@ -30,7 +49,10 @@ function Header() {
                 <HeaderOption Icon={WorkIcon} title='채용공고' />
                 <HeaderOption Icon={SmsIcon} title='메시지' />
                 <HeaderOption Icon={NotificationsIcon} title='알림' />
-                <HeaderOption avatar="https://avatars2.githubusercontent.com/u/69342392?s=460&u=5f00d9ea3cb8d134035a30cf78ca0e9a29f6e522&v=4" title={'나'}/>
+                <HeaderOption avatar={''} isProfile={true} title={'나'}/>
+                <Button variant="contained" color="primary" onClick={handleLogout}>
+                    로그아웃
+                </Button>
             </div>
         </div>
     )

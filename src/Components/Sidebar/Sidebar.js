@@ -19,7 +19,7 @@ function Sidebar() {
         <div className="sidebar">
             <div className="sidebar_top">
                 <img src="https://images.unsplash.com/photo-1579546929518-9e396f3cc809?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxleHBsb3JlLWZlZWR8MXx8fGVufDB8fHw%3D&w=1000&q=80" alt=""/>
-                <Avatar className="sidebar_avatar"  src={"https://avatars2.githubusercontent.com/u/69342392?s=460&u=5f00d9ea3cb8d134035a30cf78ca0e9a29f6e522&v=4"}/>
+                <Avatar className="sidebar_avatar"  src={''}/>
                 <h2>{korean.test(user.lastName) ?   user.lastName + user.firstName: user.firstName +' '+ user.lastName}</h2>
                 <h4>{        user.company.length === 0 
                             ?   (user.school.length === 0  

@@ -3,6 +3,7 @@ import GoogleLogin from 'react-google-login';
 import apis from "../../Apis"
 import './Login.css'
 import TextField from '@material-ui/core/TextField';
+import storage from '../../lib/storage'
 import {useHistory} from 'react-router-dom';
 import {useDispatch} from 'react-redux';
 import { login, signUpRequest, signUpSecondStep } from '../../feature/userSlice';
@@ -15,15 +16,19 @@ const Login = () => {
 	const [password, setPassword] = useState('');
 	const [passwordError, setPasswordError] = useState(false)
 	const [emailError, setEmailError] = useState(false)
+	const [autoLogin, setAutoLogin] = useState(false)
 	const history = useHistory();
 	const dispatch = useDispatch();
 	const user = useSelector(selectUser);
 
 	useEffect(() => {
-		if (user) {
+		if (user && history.location.pathname === '/login') {
 		  alert('잘못된 접근입니다.')
-		  history.replace('/')
+		  console.log('history 객체', history)
+		  console.log('history 객체비교 결과', history.location.pathname !== '/login')
+		  history.replace('/posts')
 		}
+		
 	  }, [])
 
 	const validateEmail = (mailAddress) => {
@@ -35,15 +40,14 @@ const Login = () => {
         e.preventDefault();
 		setEmailError(validateEmail(email) ? false : true)
 		setPasswordError(password.length < 6 ? true : false)
+		
 		if(!emailError && !passwordError){
 			await apis.user.login({email: email, password: password})
-			
 			apis.user.getMyProfile().then(res => {
-					console.log('로그인 한 사람',res)
 					dispatch(login(res.data))
-					history.push('/posts')
+					history.replace('/posts')
 				})
-			// .catch(error => alert(JSON.stringify(error.response.data)))
+			.catch(error => alert(JSON.stringify(error.response.data)))
 
 		
 		}
@@ -55,10 +59,9 @@ const Login = () => {
 
 	const handleSocialLogin = async (response) => {
 		await apis.user.responseGoogle(response)
-
+		
 		apis.user.getMyProfile().then(res=> {
 			console.log('로그인 한 사람',res)
-			alert('이미 회원이시군요!')
 			dispatch(login(res.data))
 			history.push('/posts')
 		}).catch(error => {

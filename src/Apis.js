@@ -8,14 +8,14 @@ axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
 axios.defaults.headers.common['Authorization'] = `Token ${token}`;
 const requester = axios.create({
-	baseURL: 'http://clone-linkedin.com/'
+	baseURL: 'http://13.209.8.137/'
 })
 
 const apis = {
 	token: {
-		update: async () => {
-		const result = await requester.get('user/me/profile/')
-		requester.defaults.headers.common['Authorization'] = `Token ${result.data.token}`
+		update: async (token) => {
+			requester.defaults.headers.common['Authorization'] = `Token ${token}`
+			return await requester.get('user/me/profile/')
 		},
 		delete: async () => {
 			await delete requester.defaults.headers.common['Authorization']
@@ -83,44 +83,29 @@ const apis = {
 			email,
 			password
 		}) => {
-			delete requester.defaults.headers.common['Authorization']
-			const result = await requester.put('user/login/', {
-				email,
-				password
-			})
-			requester.defaults.headers.common['Authorization'] = `Token ${result.data.token}`
-			console.log('일반로그인 토큰', result.data)
-			
+			try{
+				delete requester.defaults.headers.common['Authorization']
+				const result = await requester.put('user/login/', { email,password})
+				requester.defaults.headers.common['Authorization'] = `Token ${result.data.token}`
+				storage.set('token', result.data.token)
+			}catch(error){
+				alert(JSON.stringify(error.response.data))
+				throw error
+			}
 		},
-		// logout: async () => {
-		// 	delete requester.defaults.headers.common['Authorization']
-		// 	return await 
-		// },
+		logout: async () => {
+			await requester.post('user/logout/')
+			delete requester.defaults.headers.common['Authorization']
+		},
 		responseGoogle : async (response) => {
 			try{
-				// 소셜로그인 API 엔드포인트
-				// const url = 'social/login/'
-			
-				// 장고서버에 로셜로그인 호출 (response.tokenId 사용)
-				console.log('google response: ', response);
-				const newToken = response.tokenId
-				storage.set('token', newToken);
-				console.log('newtoken:', newToken);
-				console.log('token: ', response.tokenId)
-				
-				console.log('스토리지 토큰:', storage.get('token'));
 				const request = {
 				tokenId: response.tokenId,
 				};
-	
-				// 로그인토큰 : result.data.token
 				delete requester.defaults.headers.common['Authorization'];
-				
-				console.log('axios:', axios.defaults.headers.common['Authorization'])
-				console.log('리퀘스터 디폴트:', requester.defaults)
 				const result = await requester.post('social/login/', request)
 				requester.defaults.headers.common['Authorization'] = `Token ${result.data.token}`
-				console.log('logintoken:', result.data)
+				storage.set('token',result.data.token)
 				requester.get('user/').then(res=> console.log('유저 겟', res))
 				}catch(error) {
 					alert(JSON.stringify(error.response.data))
@@ -135,6 +120,9 @@ const apis = {
 		getAll: async (num) => {
 			return await requester.get(`posts/?page=${num}`)
 		},
+		getAllLatest: async (num) => {
+			return await requester.get(`posts/?order=latest&page=${num}`)
+		},
 		get: async (id) => {
 			return await requester.get(`posts/${id}/`)
 		},
@@ -145,7 +133,6 @@ const apis = {
 			return await requester.delete(`posts/${id}/`)
 		}
 
-		//위처럼 필요한 것 적으면 됩니다.
 	},
 	comments: {
 		post: async (post_id,comment) => {

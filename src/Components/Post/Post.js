@@ -8,6 +8,9 @@ import InputOption from '../Feed/InputOption'
 
 import MoreButton from './MoreButton'
 const Post = ({id,name,modified, userSchool, userCompany, updatedAt, message,photoUrl}) => {
+	const postingDate = new Date(Date.parse(updatedAt)) 
+	const formatted = postingDate.getFullYear() + "년 " + (postingDate.getMonth()+1) + "월 " + postingDate.getDate() +
+	"일 " + postingDate.getHours() + "시 " + postingDate.getMinutes() + "분";
 	return (
 		<div className="post">
 			<div className="post_header">
@@ -16,7 +19,7 @@ const Post = ({id,name,modified, userSchool, userCompany, updatedAt, message,pho
 				<div className="post_info">
 					<h2>{name}</h2>
 					{userCompany ? <p>{userCompany}</p> : <p>{userSchool}</p>} 
-					<p>{updatedAt} {modified && <p>수정됨</p>}</p>
+					<p>{formatted} {modified && <p>수정됨</p>}</p>
 				</div>
 
 				<div className="post_modify">

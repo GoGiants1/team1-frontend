@@ -62,6 +62,18 @@ const apis = {
 				companyEndDate
 			})
 		},
+		postCompany: async (company) => {
+			return await requester.post('/user/me/profile/newcompany/',company)
+		},
+		putCompany: async (id,company) => {
+			return await requester.put(`/user/me/profile/company/${id}/`,company)
+		},
+		postSchool: async (school) => {
+			return await requester.post('/user/me/profile/newschool/',school)
+		},
+		putSchool: async (id,school) => {
+			return await requester.put(`/user/me/profile/school/${id}/`,school)
+		},
 		putMyProfile: async (userinfo) => {
 			return await requester.put('user/me/profile/specific/', userinfo)			
 		},

@@ -38,9 +38,10 @@ const Login = () => {
 
 	const handleLogin = async (e) => {
         e.preventDefault();
-		setEmailError(validateEmail(email) ? false : true)
-		setPasswordError(password.length < 6 ? true : false)
-		
+		setEmailError(!validateEmail(email))
+		setPasswordError(password.length < 6)
+
+
 		if(!emailError && !passwordError){
 			await apis.user.login({email: email, password: password})
 			apis.user.getMyProfile().then(res => {
@@ -111,8 +112,8 @@ const Login = () => {
 			<GoogleLogin
 				clientId="927523383935-oo65e954d6ugud2roj8ck4l7ai4cfds0.apps.googleusercontent.com"
 				buttonText="구글 계정으로 로그인"
-				onSuccess={handleSocialLogin}
-				onFailure={handleSocialLogin}
+				onSuccess={(res) => handleSocialLogin(res)}
+				onFailure={() => {}}
 				cookiePolicy={'single_host_origin'}
 			/>
 

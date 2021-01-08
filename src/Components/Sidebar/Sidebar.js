@@ -20,7 +20,7 @@ function Sidebar({history}) {
         <div className="sidebar">
             <div className="sidebar_top">
                 <img src="https://images.unsplash.com/photo-1579546929518-9e396f3cc809?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxleHBsb3JlLWZlZWR8MXx8fGVufDB8fHw%3D&w=1000&q=80" alt=""/>
-                <Avatar className="sidebar_avatar"  src={user.image}/>
+                <Avatar className="sidebar_avatar" onClick={()=>history.push('/user/me')} src={user.image}/>
                 <h2>{ korean.test(user.lastName) ?   user.lastName + user.firstName: user.firstName +' '+ user.lastName}</h2>
                 <h4>{        user.company.length === 0 
                             ?   (user.school.length === 0  

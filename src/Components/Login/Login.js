@@ -18,7 +18,6 @@ const Login = () => {
 	const [emailError, setEmailError] = useState(false)
 	const history = useHistory();
 	const dispatch = useDispatch();
-	const user = useSelector(selectUser);
 
 	useEffect( () => {
 		const loggedInfo = storage.get('token')

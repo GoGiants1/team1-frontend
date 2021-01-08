@@ -237,9 +237,8 @@ const SignUp = () => {
 			<TextField 
 				id="outlined-basic" 
 				margin="normal"
-				error={!image.length ? true : false}
 				// helperText={!image.length ? "필수는 아닙니다": null}  
-				label="이미지 링크(URL)를 작성해주세요" 
+				label="이미지 링크(URL)를 작성해주세요(이메일 가입만)" 
 				variant="outlined" 
 				onChange={(event) => setImage(event.target.value)}
 				value={image}

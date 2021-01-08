@@ -20,6 +20,7 @@ import { selectUser } from '../../feature/userSlice';
 function Header() {
     const history = useHistory();
 	const dispatch = useDispatch();
+    const user = useSelector(selectUser);
 
     const handleLogout = () => {
         storage.remove('token')
@@ -49,7 +50,7 @@ function Header() {
                 <HeaderOption Icon={WorkIcon} title='채용공고' />
                 <HeaderOption Icon={SmsIcon} title='메시지' />
                 <HeaderOption Icon={NotificationsIcon} title='알림' />
-                <HeaderOption avatar={''} isProfile={true} title={'나'}/>
+                <HeaderOption avatar={user.image} isProfile={true} title={'나'}/>
                 <Button variant="contained" color="primary" onClick={handleLogout}>
                     로그아웃
                 </Button>

@@ -28,7 +28,7 @@ function App({history}) {
         <Route path={routes.search.path} component={routes.search.component} />
         <Route path={routes.login.path} component={routes.login.component} />
         <Route path={routes.signup.path} component={routes.signup.component} />
-
+        
         <Redirect from='/' to={routes.login.path} />
       </Switch>
     </ConnectedRouter>

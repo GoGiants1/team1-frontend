@@ -6,9 +6,10 @@ import CardGiftcardIcon from '@material-ui/icons/CardGiftcard';
 import BookmarkIcon from '@material-ui/icons/Bookmark';
 import { useSelector } from 'react-redux';
 import { selectUser } from '../../feature/userSlice';
-function Sidebar({history}) {
+import {useHistory} from 'react-router-dom'
+function Sidebar() {
     const user = useSelector(selectUser);
-
+    const history = useHistory()
     const korean = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
     const bottomItem = (topic) =>(
         <div className="sidebar_bottomItem">

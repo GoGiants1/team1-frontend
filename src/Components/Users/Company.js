@@ -1,5 +1,4 @@
 import React, {useState} from "react";
-import {Segment} from "semantic-ui-react";
 import AddIcon from '@material-ui/icons/Add';
 import CreateIcon from "@material-ui/icons/Create";
 import Modal from "@material-ui/core/Modal";
@@ -15,7 +14,7 @@ const Company = ({profile, me}) => {
   const [start, setStart] = useState("")
   const [end, setEnd] = useState("")
   return (
-    <Segment>
+    <div className='segment'>
       <Modal
         disablePortal
         disableEnforceFocus
@@ -81,7 +80,7 @@ const Company = ({profile, me}) => {
           </div>
         )
       })}
-    </Segment>
+    </div>
   );
 }
 

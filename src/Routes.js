@@ -7,11 +7,12 @@ import LoginPage from './Pages/Login/Login'
 
 
 const routes = {
-	users: { path: '/user/:user_id', component: UsersPage },
-	posts: { path: '/posts/', component: PostsPage },
-	login: { path: '/login/', component: LoginPage },
-	signup: { path: '/signup/', component: SignUpPage },
-	search: { path: '/search/', component: SearchPage },
+	user: { path: '/user/:user_id', component: UsersPage },
+	posts: { path: '/posts', component: PostsPage },
+	login: { path: '/login', component: LoginPage },
+	signup: { path: '/signup', component: SignUpPage },
+	search: { path: '/search', component: SearchPage },
+	userMe:{path: '/user/me', component: UsersPage}
 }
 
 export { routes }

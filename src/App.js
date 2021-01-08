@@ -18,17 +18,16 @@ function App({history}) {
   const user = useSelector(selectUser);
   
   const dispatch = useDispatch();
- 
 
   return (
     <ConnectedRouter history={history}>
       <Switch>
-        <Route path={routes.users.path} component={routes.users.component} />
+        <Route path={routes.user.path} component={routes.user.component} />
         <Route path={routes.posts.path} component={routes.posts.component} />
-        <Route path={routes.search.path} component={routes.search.component} />
+        <Route path={routes.search.path} component={routes.search.component}  />
         <Route path={routes.login.path} component={routes.login.component} />
         <Route path={routes.signup.path} component={routes.signup.component} />
-
+        <Route path={routes.userMe.path} component={routes.user.component} />
         <Redirect from='/' to={routes.login.path} />
       </Switch>
     </ConnectedRouter>

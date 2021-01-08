@@ -17,8 +17,8 @@ import { useSelector } from 'react-redux';
 import { selectUser } from '../../feature/userSlice';
 
 
-function Header() {
-    const history = useHistory();
+function Header({history}) {
+    // const history = useHistory();
 	const dispatch = useDispatch();
     const user = useSelector(selectUser);
 
@@ -26,6 +26,11 @@ function Header() {
         storage.remove('token')
         dispatch(logout())
         history.push('/login')
+    }
+    const goPost = () => {
+        console.log(history)
+        history.push('/posts')
+        
     }
 
     return (
@@ -45,7 +50,7 @@ function Header() {
             </div>
 
             <div className="header_right">
-                <HeaderOption Icon={HomeIcon} title='홈' />
+                <HeaderOption Icon={HomeIcon} title='홈' onClick={goPost} />
                 <HeaderOption Icon={PeopleIcon} title='인맥' />
                 <HeaderOption Icon={WorkIcon} title='채용공고' />
                 <HeaderOption Icon={SmsIcon} title='메시지' />

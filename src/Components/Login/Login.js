@@ -26,11 +26,16 @@ const Login = () => {
 			if(loggedInfo){
 				apis.token.update(loggedInfo).then( res=> {
 					console.log('getMyprofile', res)
-					dispatch(login(res.data))
-					alert('잘못된 접근입니다.')
-					console.log('history 객체', history)
-					console.log('history 객체비교 결과', history.location.pathname !== '/login')
-					history.replace('/posts')
+					if(!res.data.profile_created){
+						storage.remove('token')
+					}
+					else {
+						dispatch(login(res.data))
+						alert('잘못된 접근입니다.')
+						console.log('history 객체', history)
+						console.log('history 객체비교 결과', history.location.pathname !== '/login')
+						history.replace('/posts')
+					}
 				  })
 				}
 			console.log('his',history)

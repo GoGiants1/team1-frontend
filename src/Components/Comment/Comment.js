@@ -6,6 +6,7 @@ import ShareOutlinedIcon from '@material-ui/icons/ShareOutlined';
 import SendOutlinedIcon from '@material-ui/icons/SendOutlined';
 import InputOption from '../Feed/InputOption'
 import MoreButton from './MoreButton'
+import './Comment.css'
 
 function Comment({id,firstName,lastName,modified, userSchool, userCompany, updatedAt, message,image}) {
     const korean = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;

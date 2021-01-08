@@ -31,6 +31,7 @@ const SignUp = () => {
 	const user = useSelector(selectUser);
 
 
+
 	useEffect(() => {
 		const loggedInfo = storage.get('token')
 		console.log(loggedInfo)
@@ -38,11 +39,15 @@ const SignUp = () => {
 			if(loggedInfo){
 				apis.token.update(loggedInfo).then( res=> {
 					console.log('getMyprofile', res)
-					dispatch(login(res.data))
-					alert('잘못된 접근입니다.')
-					console.log('history 객체', history)
-					console.log('history 객체비교 결과', history.location.pathname !== '/login')
-					history.replace('/posts')
+					if(!res.data.profile_created){
+						storage.remove('token')
+					}else{
+						dispatch(login(res.data))
+						alert('잘못된 접근입니다.')
+						console.log('history 객체', history)
+						console.log('history 객체비교 결과', history.location.pathname !== '/login')
+						history.replace('/posts')
+					}
 				  })
 				}
 			else return
@@ -91,6 +96,7 @@ const SignUp = () => {
 
 			apis.user.getMyProfile().then(res=> {
 				console.log('로그인 한 사람2',res)
+				setImage(res.data.image)
 			}).then(() => {
 				apis.user.putMyProfile({
 					firstName: firstName,
@@ -131,6 +137,7 @@ const SignUp = () => {
 
 		apis.user.getMyProfile().then(res=> {
 			console.log('로그인 한 사람',res)
+			setImage(res.data.image)
 			if(res.data.profile_created){
 				alert('이미 회원가입을 하셨습니다. 로그인을 진행합니다')
 				dispatch(signUpRequest(false))

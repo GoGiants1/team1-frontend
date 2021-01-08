@@ -16,33 +16,12 @@ import storage from './lib/storage'
 
 function App({history}) {
   const user = useSelector(selectUser);
-  const signUpRequest = useSelector(selectSignupRequest)
+  
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    const loggedInfo = storage.get('token')
-    if(loggedInfo){
-      apis.token.update(loggedInfo).then( res=> {
-          dispatch(login(res.data))
-          history.replace('/posts')
-        })
-    } else{return}
-    apis.user.getMyProfile((authUser) => {
-      if (authUser) {
-        dispatch(
-          login({
-            authUser
-          })
-        );
-      } else {
-        history.push('/login')
-      }
-    });
-  }, [dispatch]);
+ 
 
   return (
     <ConnectedRouter history={history}>
-      { !user ? signUpRequest? <SignUpPage/> : <LoginPage/> : (
       <Switch>
         <Route path={routes.users.path} component={routes.users.component} />
         <Route path={routes.posts.path} component={routes.posts.component} />
@@ -50,9 +29,8 @@ function App({history}) {
         <Route path={routes.login.path} component={routes.login.component} />
         <Route path={routes.signup.path} component={routes.signup.component} />
 
-        <Redirect from='/' to={routes.posts.path} />
+        <Redirect from='/' to={routes.login.path} />
       </Switch>
-      )} 
     </ConnectedRouter>
   );
 }

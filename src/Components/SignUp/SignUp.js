@@ -1,4 +1,4 @@
-import React,{useState} from 'react';
+import React,{useState, useEffect} from 'react';
 import GoogleLogin from 'react-google-login';
 import apis from "../../Apis"
 import './SignUp.css'
@@ -6,8 +6,9 @@ import TextField from '@material-ui/core/TextField';
 import {useHistory} from 'react-router-dom';
 import {useDispatch} from 'react-redux';
 import { login, signUpRequest, signUpSecondStep } from '../../feature/userSlice';
-import { selectSignupSecondStep } from '../../feature/userSlice';
+import { selectSignupSecondStep, selectUser } from '../../feature/userSlice';
 import { useSelector } from 'react-redux';
+import storage from '../../lib/storage'
 
 
 const SignUp = () => {
@@ -22,10 +23,35 @@ const SignUp = () => {
 	const [detail, setDetail] = useState('');
 	const [region, setRegion] = useState('');
 	const [contact, setContact] = useState('');
-
-	const history = useHistory();
+	const [image, setImage] = useState('');
+	
 	const dispatch = useDispatch();
 	const signUpSecondStepCheck = useSelector(selectSignupSecondStep);
+	const history = useHistory();
+	const user = useSelector(selectUser);
+
+
+	useEffect(() => {
+		const loggedInfo = storage.get('token')
+		console.log(loggedInfo)
+		if(history.location.pathname === '/signup'){
+			if(loggedInfo){
+				apis.token.update(loggedInfo).then( res=> {
+					console.log('getMyprofile', res)
+					dispatch(login(res.data))
+					alert('잘못된 접근입니다.')
+					console.log('history 객체', history)
+					console.log('history 객체비교 결과', history.location.pathname !== '/login')
+					history.replace('/posts')
+				  })
+				}
+			else return
+			console.log('his',history)
+		}
+	  }, [])
+
+
+
 
 	const validateEmail = (mailAddress) => {
 		const re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -44,10 +70,8 @@ const SignUp = () => {
 				dispatch(signUpSecondStep(true))
 			})
 			.catch(error => {
-				alert(JSON.stringify(error.response.data))
-				alert('이미 가입된 이메일입니다')
+				alert('이미 가입된 이메일입니다.')
 			})
-
 		}
 	}
 	
@@ -55,35 +79,44 @@ const SignUp = () => {
         e.preventDefault();
 		setLastNameError( lastName.length === 0 ? true : false)
 		setFirstNameError( firstName.length === 0 ? true : false)
-		if(!lastNameError && !firstNameError){ //오류 발생 주의
+		if(!lastNameError && !firstNameError){
 			apis.user.getMyProfile().then(res=> {
-				console.log('로그인 한 사람',res)
-				})
-			
+				console.log('로그인 한 사람1',res)
+			})
 			await apis.user.userName({ first_name: firstName, last_name: lastName })
 			.then(res=> {
 				console.log('회원가입 2단계 로그:', res)	
 			})
 			.catch(error => alert(JSON.stringify(error.response.data)))
 
-			apis.user.putMyProfile({
-				firstName:firstName,
-				lastName:lastName,
-				detail: detail,
-				region: region,
-				contact: contact,
-			})
-			.then(res=> { 
-				console.log(res)
-				apis.user.getMyProfile().then(res=> {
-					console.log('로그인 한 사람',res)
+			apis.user.getMyProfile().then(res=> {
+				console.log('로그인 한 사람2',res)
+			}).then(() => {
+				apis.user.putMyProfile({
+					firstName: firstName,
+					lastName: lastName,
+					detail: detail,
+					region: region,
+					contact: contact,
+					profile_created: true,
+					image: image
+				})
+				.then(res=> { 
 					console.log(res)
-					dispatch(login(res.data))
-					dispatch(signUpRequest(false))
-					dispatch(signUpSecondStep(false))	
-					history.push('/posts')
-				}).catch(error => alert(JSON.stringify(error)))
-			})}
+					apis.user.getMyProfile().then(res=> {
+						console.log('로그인 한 사람3',res)
+						console.log(res)
+						dispatch(login(res.data))
+						dispatch(signUpRequest(false))
+						dispatch(signUpSecondStep(false))	
+						history.push('/posts')
+					}).catch(error => alert(JSON.stringify(error)))
+				})
+			})
+			
+
+			
+		}
 		}
 
 
@@ -98,14 +131,19 @@ const SignUp = () => {
 
 		apis.user.getMyProfile().then(res=> {
 			console.log('로그인 한 사람',res)
-			alert('이미 회원가입을 하셨습니다. 로그인을 진행합니다')
-			dispatch(signUpRequest(false))
-			dispatch(signUpSecondStep(false))
-			dispatch(login(res.data))	
-			history.push('/posts')
+			if(res.data.profile_created){
+				alert('이미 회원가입을 하셨습니다. 로그인을 진행합니다')
+				dispatch(signUpRequest(false))
+				dispatch(signUpSecondStep(false))
+				dispatch(login(res.data))	
+				history.push('/posts')
+			}else{
+				alert('다음 단계로 이동합니다.')
+				dispatch(signUpSecondStep(true))	
+			}
+
 		}).catch(error => {
-			alert('다음 단계로 이동합니다.')
-			dispatch(signUpSecondStep(true))
+			alert(JSON.stringify(error))
 		})
 	}
 
@@ -148,7 +186,7 @@ const SignUp = () => {
 			clientId="927523383935-oo65e954d6ugud2roj8ck4l7ai4cfds0.apps.googleusercontent.com"
 			buttonText="구글 계정으로 가입"
 			onSuccess={handleSocialSignup}
-			onFailure={handleSocialSignup}
+			onFailure={() => {}}
 			cookiePolicy={'single_host_origin'}
 		/>
 
@@ -188,6 +226,16 @@ const SignUp = () => {
 				onChange={(event) => setFirstName(event.target.value)}
 				value={firstName}
 				required
+			/>
+			<TextField 
+				id="outlined-basic" 
+				margin="normal"
+				error={!image.length ? true : false}
+				// helperText={!image.length ? "필수는 아닙니다": null}  
+				label="이미지 링크(URL)를 작성해주세요" 
+				variant="outlined" 
+				onChange={(event) => setImage(event.target.value)}
+				value={image}
 			/>
 			<TextField 
 				id="outlined-basic" 

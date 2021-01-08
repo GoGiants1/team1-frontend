@@ -17,6 +17,7 @@ import { selectUser } from '../../feature/userSlice';
 
 // Todo: 
 // 3. 오른쪽 widget (Page/Posts.js에 구현 필요.)
+// 새로고침 기능
 
 function Feed() {
     const [input, setInput] = useState('');
@@ -28,7 +29,8 @@ function Feed() {
     const [count, setCount] = useState();
     const history = useHistory();
 	const dispatch = useDispatch();
-	const user = useSelector(selectUser);
+    const user = useSelector(selectUser);
+    
 
     useEffect(() =>{
         apis.posts.getAllLatest(pageNumber).then((res) =>{
@@ -104,18 +106,18 @@ function Feed() {
                 </div>
             </div>
 
-                {posts.map(({id, content, createdAt, updatedAt,modified, userId,userFirstName,userLastName,userSchool,userCompany, photoUrl}) =>(
+                {posts.map(({id, content, createdAt, updatedAt,modified, userId,userFirstName,userLastName,userSchool,userCompany, image}) =>(
                     <Post
                         key={id}
                         id={id}
-                        name={userFirstName + userLastName} 
-
+                        firstName= {userFirstName} 
+                        lastName = {userLastName} 
                         userSchool={userSchool}
                         userCompany={userCompany}
                         updatedAt={updatedAt}
                         modified={modified}
                         message={content}
-                        photoUrl={photoUrl}
+                        image={image}
                     />
                 ))}
                 {fetching ? 'Loading...' : null}

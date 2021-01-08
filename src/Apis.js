@@ -139,9 +139,6 @@ const apis = {
 			return await requester.post(`posts/${post_id}/comments/`,comment)
 		}
 	},
-	// reaction: {
-	//
-	// }
 }
 
 export default apis

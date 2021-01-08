@@ -110,6 +110,7 @@ function Feed() {
                     <Post
                         key={id}
                         id={id}
+                        userId={userId}
                         firstName= {userFirstName} 
                         lastName = {userLastName} 
                         userSchool={userSchool}

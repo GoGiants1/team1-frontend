@@ -12,25 +12,26 @@ import Button from '@material-ui/core/Button';
 import storage from '../../lib/storage'
 import {useHistory} from 'react-router-dom';
 import {useDispatch} from 'react-redux';
-import { login, logout } from '../../feature/userSlice';
+import { logout } from '../../feature/userSlice';
 import { useSelector } from 'react-redux';
 import { selectUser } from '../../feature/userSlice';
 
 
 function Header({history}) {
-    // const history = useHistory();
+    
 	const dispatch = useDispatch();
     const user = useSelector(selectUser);
 
     const handleLogout = () => {
         storage.remove('token')
+        console.log('his',history)
         dispatch(logout())
         history.push('/login')
     }
     const goPost = () => {
         console.log(history)
+        console.log('his',history)
         history.push('/posts')
-        
     }
 
     return (
@@ -50,7 +51,7 @@ function Header({history}) {
             </div>
 
             <div className="header_right">
-                <HeaderOption Icon={HomeIcon} title='홈' onClick={goPost} />
+                <HeaderOption Icon={HomeIcon} title='홈' onClick={() => history.push('/posts')} />
                 <HeaderOption Icon={PeopleIcon} title='인맥' />
                 <HeaderOption Icon={WorkIcon} title='채용공고' />
                 <HeaderOption Icon={SmsIcon} title='메시지' />

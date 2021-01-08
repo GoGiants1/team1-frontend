@@ -1,6 +1,6 @@
 import { Search } from '../../Components/Search'
 
-const SearchPage = () => {
+const SearchPage = ({history}) => {
 	return <Search />
 }
 

@@ -19,27 +19,27 @@ const Login = () => {
 	const history = useHistory();
 	const dispatch = useDispatch();
 
-	useEffect( () => {
-		const loggedInfo = storage.get('token')
-		if(history.location.pathname === '/login'){
-			if(loggedInfo){
-				apis.token.update(loggedInfo).then( res=> {
-					console.log('getMyprofile', res)
-					if(!res.data.profile_created){
-						storage.remove('token')
-					}
-					else {
-						dispatch(login(res.data))
-						alert('잘못된 접근입니다.')
-						console.log('history 객체', history)
-						console.log('history 객체비교 결과', history.location.pathname !== '/login')
-						history.replace('/posts')
-					}
-				  })
-				}
-			console.log('his',history)
-		}
-	  }, [])
+	// useEffect( () => {
+	// 	const loggedInfo = storage.get('token')
+	// 	if(history.location.pathname === '/login'){
+	// 		if(loggedInfo){
+	// 			apis.token.update(loggedInfo).then( res=> {
+	// 				console.log('getMyprofile', res)
+	// 				if(!res.data.profile_created){
+	// 					storage.remove('token')
+	// 				}
+	// 				else {
+	// 					dispatch(login(res.data))
+	// 					alert('잘못된 접근입니다.')
+	// 					console.log('history 객체', history)
+	// 					console.log('history 객체비교 결과', history.location.pathname !== '/login')
+	// 					history.replace('/posts')
+	// 				}
+	// 			  })
+	// 			}
+	// 		console.log('his',history)
+	// 	}
+	//   }, [])
 
 	const validateEmail = (mailAddress) => {
 		const re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;

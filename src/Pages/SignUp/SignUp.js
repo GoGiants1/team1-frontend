@@ -1,6 +1,6 @@
 import { SignUp } from '../../Components/SignUp'
 
-const SignUpPage = () => {
+const SignUpPage = ({history, match}) => {
 	return <SignUp />
 }
 

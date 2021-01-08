@@ -27,21 +27,22 @@ const University = ({profile,me}) => {
           setPlus(false)
           setEdit(false)
         }}
+        BackdropProps={{style: {backgroundColor: 'transparent'}}}
         aria-labelledby="simple-modal-title"
         aria-describedby="simple-modal-description"
       >
-        <div>
+        <div className='edit'>
           <form noValidate autoComplete="off">
-            <TextField id="standard-basic" label="학교" onChange={(event) => {
+            <TextField color="primary" variant="outlined" id="outlined-basic" label="학교" onChange={(event) => {
               setName(event.target.value)
             }}/>
-            <TextField id="standard-basic" label="입학년도" onChange={(event) => {
+            <TextField variant="outlined" id="outlined-basic" label="입학년도" onChange={(event) => {
               setStart(event.target.value)
             }}/>
-            <TextField id="standard-basic" label="졸업년도" onChange={(event) => {
+            <TextField variant="outlined" id="outlined-basic" label="졸업년도" onChange={(event) => {
               setEnd(event.target.value)
             }}/>
-            <TextField id="standard-basic" label="전공" onChange={(event) => {
+            <TextField variant="outlined" id="outlined-basic" label="전공" onChange={(event) => {
               setMajor(event.target.value)
             }}/>
             <Button variant="contained" onClick={() => {

@@ -4,21 +4,22 @@ import Header from "../../Components/Header/Header";
 import University from "../../Components/Users/University";
 import Company from "../../Components/Users/Company";
 import apis from "../../Apis";
+import {useParams} from 'react-router'
 
 const UsersPage = ({match}) => {
-
+  const params = useParams()
   const [profile, setProfile] = useState(null)
   const [me, setMe] = useState(false)
 
   useEffect(() => {
-    if (match.params.user_id === 'me') {
+    if (params.user_id === 'me') {
       apis.user.getMyProfile().then(res => {
         setProfile(res.data);
         setMe(true)
         console.log(res.data);
       })
     } else {
-      apis.user.getIdProfile(match.params.user_id).then(res => {
+      apis.user.getIdProfile(params.user_id).then(res => {
         setProfile(res.data);
         setMe(false)
         console.log(res.data);

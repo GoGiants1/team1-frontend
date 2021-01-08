@@ -55,13 +55,11 @@ const SignUp = () => {
         e.preventDefault();
 		setLastNameError( lastName.length === 0 ? true : false)
 		setFirstNameError( firstName.length === 0 ? true : false)
-		if(!lastNameError && !firstNameError){
-			// apis.user.postMyProfile().then(res=> console.log(res))
-			// .catch(error => console.log('유저 프로플 등록 에러',error))
+		if(!lastNameError && !firstNameError){ //오류 발생 주의
 			apis.user.getMyProfile().then(res=> {
 				console.log('로그인 한 사람',res)
 				})
-
+			
 			await apis.user.userName({ first_name: firstName, last_name: lastName })
 			.then(res=> {
 				console.log('회원가입 2단계 로그:', res)	
@@ -71,20 +69,22 @@ const SignUp = () => {
 			apis.user.putMyProfile({
 				firstName:firstName,
 				lastName:lastName,
-				detail: '한줄 소개',
-				region: 'Seoul',
-				contact:'01011111111',
+				detail: detail,
+				region: region,
+				contact: contact,
 			})
-			.then(res=> {
+			.then(res=> { 
 				console.log(res)
-				dispatch(login(res.data))
-				dispatch(signUpRequest(false))
-				dispatch(signUpSecondStep(false))	
-				history.push('/posts')
-			})
-			.catch(error => alert(JSON.stringify(error.response.data)))
+				apis.user.getMyProfile().then(res=> {
+					console.log('로그인 한 사람',res)
+					console.log(res)
+					dispatch(login(res.data))
+					dispatch(signUpRequest(false))
+					dispatch(signUpSecondStep(false))	
+					history.push('/posts')
+				}).catch(error => alert(JSON.stringify(error)))
+			})}
 		}
-	}
 
 
 	const jumpToLogin = () => {

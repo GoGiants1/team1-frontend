@@ -111,9 +111,11 @@ const apis = {
 		},
 		responseGoogle : async (response) => {
 			try{
+				
 				const request = {
 				tokenId: response.tokenId,
 				};
+				console.log(response)
 				delete requester.defaults.headers.common['Authorization'];
 				const result = await requester.post('social/login/', request)
 				requester.defaults.headers.common['Authorization'] = `Token ${result.data.token}`
@@ -151,9 +153,6 @@ const apis = {
 			return await requester.post(`posts/${post_id}/comments/`,comment)
 		}
 	},
-	// reaction: {
-	//
-	// }
 }
 
 export default apis

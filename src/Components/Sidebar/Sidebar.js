@@ -1,4 +1,4 @@
-import React from 'react'
+import React,{useEffect,useState} from 'react'
 import "./Sidebar.css"
 import {Avatar} from "@material-ui/core"
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
@@ -6,8 +6,9 @@ import CardGiftcardIcon from '@material-ui/icons/CardGiftcard';
 import BookmarkIcon from '@material-ui/icons/Bookmark';
 import { useSelector } from 'react-redux';
 import { selectUser } from '../../feature/userSlice';
-function Sidebar() {
+function Sidebar({history}) {
     const user = useSelector(selectUser);
+
     const korean = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
     const bottomItem = (topic) =>(
         <div className="sidebar_bottomItem">
@@ -20,7 +21,7 @@ function Sidebar() {
             <div className="sidebar_top">
                 <img src="https://images.unsplash.com/photo-1579546929518-9e396f3cc809?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxleHBsb3JlLWZlZWR8MXx8fGVufDB8fHw%3D&w=1000&q=80" alt=""/>
                 <Avatar className="sidebar_avatar"  src={''}/>
-                <h2>{korean.test(user.lastName) ?   user.lastName + user.firstName: user.firstName +' '+ user.lastName}</h2>
+                <h2>{ korean.test(user.lastName) ?   user.lastName + user.firstName: user.firstName +' '+ user.lastName}</h2>
                 <h4>{        user.company.length === 0 
                             ?   (user.school.length === 0  
                                 ?   (user.region) 

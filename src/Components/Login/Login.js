@@ -16,19 +16,30 @@ const Login = () => {
 	const [password, setPassword] = useState('');
 	const [passwordError, setPasswordError] = useState(false)
 	const [emailError, setEmailError] = useState(false)
-	const [autoLogin, setAutoLogin] = useState(false)
 	const history = useHistory();
 	const dispatch = useDispatch();
 	const user = useSelector(selectUser);
 
-	useEffect(() => {
-		if (user && history.location.pathname === '/login') {
-		  alert('잘못된 접근입니다.')
-		  console.log('history 객체', history)
-		  console.log('history 객체비교 결과', history.location.pathname !== '/login')
-		  history.replace('/posts')
+	useEffect( () => {
+		const loggedInfo = storage.get('token')
+		if(history.location.pathname === '/login'){
+			if(loggedInfo){
+				apis.token.update(loggedInfo).then( res=> {
+					console.log('getMyprofile', res)
+					if(!res.data.profile_created){
+						storage.remove('token')
+					}
+					else {
+						dispatch(login(res.data))
+						alert('잘못된 접근입니다.')
+						console.log('history 객체', history)
+						console.log('history 객체비교 결과', history.location.pathname !== '/login')
+						history.replace('/posts')
+					}
+				  })
+				}
+			console.log('his',history)
 		}
-		
 	  }, [])
 
 	const validateEmail = (mailAddress) => {
@@ -49,8 +60,6 @@ const Login = () => {
 					history.replace('/posts')
 				})
 			.catch(error => alert(JSON.stringify(error.response.data)))
-
-		
 		}
 	}
 	const jumpToSignUp = () => {
@@ -63,13 +72,20 @@ const Login = () => {
 		
 		apis.user.getMyProfile().then(res=> {
 			console.log('로그인 한 사람',res)
-			dispatch(login(res.data))
-			history.push('/posts')
+			if(res.data.profile_created){
+				alert('이미 회원가입을 하셨습니다. 로그인을 진행합니다')
+				dispatch(signUpRequest(false))
+				dispatch(signUpSecondStep(false))
+				dispatch(login(res.data))	
+				history.push('/posts')
+			}else{
+				alert('다음 단계로 이동합니다.')
+				dispatch(signUpRequest(true))
+				dispatch(signUpSecondStep(true))
+				history.push('/signup')	
+			}
 		}).catch(error => {
-			alert('회원가입이 완료되지 않았습니다. 회원가입 페이지로 이동합니다')
-			dispatch(signUpRequest(true))
-			dispatch(signUpSecondStep(true))
-			history.push('/signup')
+			alert(JSON.stringify(error))
 		}
 	)
 }
@@ -112,7 +128,7 @@ const Login = () => {
 			<GoogleLogin
 				clientId="927523383935-oo65e954d6ugud2roj8ck4l7ai4cfds0.apps.googleusercontent.com"
 				buttonText="구글 계정으로 로그인"
-				onSuccess={(res) => handleSocialLogin(res)}
+				onSuccess={handleSocialLogin}
 				onFailure={() => {}}
 				cookiePolicy={'single_host_origin'}
 			/>

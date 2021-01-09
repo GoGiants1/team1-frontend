@@ -24,7 +24,7 @@ function App({history}) {
         <Route exact path={routes.login.path} component={Auth(routes.login.component, null)} />
         <Route exact path={routes.signup.path} component={Auth(routes.signup.component, null)} />
         <Route exact path={routes.userMe.path} component={Auth(routes.user.component, true)} />
-        <Redirect exact from='/' to={routes.login.path} />
+        <Redirect from='/' to={routes.login.path} />
       </Switch>
     </ConnectedRouter>
   );

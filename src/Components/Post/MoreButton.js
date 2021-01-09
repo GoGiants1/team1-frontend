@@ -6,7 +6,6 @@ import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 import apis from "../../Apis"
 
 const options = [
-  '글 수정',
   '글 삭제',
 ];
 
@@ -22,8 +21,10 @@ export default function LongMenu(id,posts) {
 
   const handleClose = () => {
     console.log(id)
-    apis.posts.delete(id.id).then(res => console.log(res));
-    // 실시간으로 지워지도록 수정 필요
+    apis.posts.delete(id.id).then(res => {
+      console.log(res)
+      // setIsDelete(true)
+    });
     setAnchorEl(null);
   };
 
@@ -51,7 +52,7 @@ export default function LongMenu(id,posts) {
         }}
       >
         {options.map((option) => (
-          <MenuItem key={option} selected={option === 'Pyxis'} onClick={handleClose}>
+          <MenuItem key={option} selected={option === 'Pyxis'} onClick={ handleClose}>
             {option}
           </MenuItem>
         ))}

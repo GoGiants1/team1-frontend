@@ -6,7 +6,7 @@ import Company from "../../Components/Users/Company";
 import apis from "../../Apis";
 import {useParams} from 'react-router'
 
-const UsersPage = ({match}) => {
+const UsersPage = ({match, user}) => {
   const params = useParams()
   const [profile, setProfile] = useState(null)
   const [me, setMe] = useState(false)

@@ -35,7 +35,7 @@ export default function (SpecificComponent, option, adminRoute = null) {
                             his.push('/posts')
                         }
                     })
-                }   
+                }
             }
         }, [dispatch, props.history])
         return (

@@ -28,12 +28,6 @@ function Header() {
         dispatch(logout())
         history.push('/login')
     }
-    const goPost = () => {
-        console.log(history)
-        console.log('his',history)
-        history.push('/posts')
-    }
-
     return (
         <div className='header'>
             <div className="header_left">

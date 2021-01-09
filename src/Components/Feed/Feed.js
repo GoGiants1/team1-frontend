@@ -17,7 +17,6 @@ import { selectUser } from '../../feature/userSlice';
 
 // Todo: 
 // 3. 오른쪽 widget (Page/Posts.js에 구현 필요.)
-// 새로고침 기능
 
 function Feed() {
     const [input, setInput] = useState('');

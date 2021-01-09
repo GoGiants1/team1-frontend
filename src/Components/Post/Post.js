@@ -6,7 +6,9 @@ import ShareOutlinedIcon from '@material-ui/icons/ShareOutlined';
 import SendOutlinedIcon from '@material-ui/icons/SendOutlined';
 import InputOption from '../Feed/InputOption'
 import MoreButton from './MoreButton'
-const Post = ({id,firstName,lastName,modified, userSchool, userCompany, updatedAt, message,image}) => {
+import {useHistory} from 'react-router-dom'
+const Post = ({id,firstName,lastName,modified, userSchool, userCompany, updatedAt, message,image,userId}) => {
+	const history = useHistory()
 	const postingDate = new Date(Date.parse(updatedAt)) 
 	const formatted = postingDate.getFullYear() + "년 " + (postingDate.getMonth()+1) + "월 " + postingDate.getDate() +
 	"일 " + postingDate.getHours() + "시 " + postingDate.getMinutes() + "분";
@@ -14,7 +16,7 @@ const Post = ({id,firstName,lastName,modified, userSchool, userCompany, updatedA
 	return (
 		<div className="post">
 			<div className="post_header">
-				<Avatar src={image}/>
+				<Avatar src={image} onClick={()=>history.push(`/user/${userId}`)} />
 
 				<div className="post_info">
 					<h2>{korean.test(lastName) || korean.test(lastName) ? lastName + firstName : firstName +' ' + lastName }</h2>

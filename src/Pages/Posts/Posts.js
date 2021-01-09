@@ -4,7 +4,7 @@ import Feed from '../../Components/Feed/Feed'
 import './Posts.css'
 
 
-const PostsPage = () => {
+const PostsPage = ({history}) => {
 	return (
 	<div className="app">
     	<Header/>

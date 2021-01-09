@@ -1,5 +1,4 @@
 import React, {useState} from "react";
-import {Segment} from "semantic-ui-react";
 import AddIcon from '@material-ui/icons/Add';
 import CreateIcon from "@material-ui/icons/Create";
 import Modal from "@material-ui/core/Modal";
@@ -15,7 +14,7 @@ const Company = ({profile, me}) => {
   const [start, setStart] = useState("")
   const [end, setEnd] = useState("")
   return (
-    <Segment>
+    <div className='segment'>
       <Modal
         disablePortal
         disableEnforceFocus
@@ -26,18 +25,19 @@ const Company = ({profile, me}) => {
           setPlus(false)
           setEdit(false)
         }}
+        BackdropProps={{style: {backgroundColor: 'transparent'}}}
         aria-labelledby="simple-modal-title"
         aria-describedby="simple-modal-description"
       >
         <div>
           <form noValidate autoComplete="off">
-            <TextField id="standard-basic" label="회사명" onChange={(event) => {
+            <TextField variant="outlined" id="outlined-basic" label="회사명" onChange={(event) => {
               setName(event.target.value)
             }}/>
-            <TextField id="standard-basic" label="입사일" onChange={(event) => {
+            <TextField variant="outlined" id="outlined-basic" label="입사일(xxxx-xx-xx)" onChange={(event) => {
               setStart(event.target.value)
             }}/>
-            <TextField id="standard-basic" label="퇴사일" onChange={(event) => {
+            <TextField variant="outlined" id="outlined-basic" label="퇴사일(xxxx-xx-xx)" onChange={(event) => {
               setEnd(event.target.value)
             }}/>
             <Button variant="contained" onClick={() => {
@@ -81,7 +81,7 @@ const Company = ({profile, me}) => {
           </div>
         )
       })}
-    </Segment>
+    </div>
   );
 }
 

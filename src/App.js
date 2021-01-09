@@ -11,25 +11,20 @@ import SignUpPage from './Pages/SignUp/SignUp';
 import {useDispatch} from 'react-redux';
 import {login, logout} from './feature/userSlice';
 import storage from './lib/storage'
-
+import Auth from './hoc/auth'
 
 
 function App({history}) {
-  const user = useSelector(selectUser);
-  
-  const dispatch = useDispatch();
- 
-
   return (
     <ConnectedRouter history={history}>
       <Switch>
-        <Route path={routes.users.path} component={routes.users.component} />
-        <Route path={routes.posts.path} component={routes.posts.component} />
-        <Route path={routes.search.path} component={routes.search.component} />
-        <Route path={routes.login.path} component={routes.login.component} />
-        <Route path={routes.signup.path} component={routes.signup.component} />
-
-        <Redirect from='/' to={routes.login.path} />
+        <Route exact path={routes.user.path} component={Auth(routes.user.component, true)} />
+        <Route exact path={routes.posts.path} component={Auth(routes.posts.component, true)} />
+        <Route exact path={routes.search.path} component={Auth(routes.search.component, true)}  />
+        <Route exact path={routes.login.path} component={Auth(routes.login.component, null)} />
+        <Route exact path={routes.signup.path} component={Auth(routes.signup.component, null)} />
+        <Route exact path={routes.userMe.path} component={Auth(routes.user.component, true)} />
+        <Redirect exact from='/' to={routes.login.path} />
       </Switch>
     </ConnectedRouter>
   );

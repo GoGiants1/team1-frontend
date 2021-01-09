@@ -111,7 +111,7 @@ function Feed() {
                 </div>
             </div>
                 {!nextLink && posts ? <p onClick={refresh}>모든 글을 다 보셨습니다. 눌러서 새로고침</p> : null}
-                {posts.map(({id, content, createdAt, updatedAt,modified, userId,userFirstName,userLastName,userSchool,userCompany, image}) =>(
+                {posts.map(({id, content, createdAt, updatedAt,modified, userId,userFirstName,userLastName,userSchool,userCompany, userImage}) =>(
                     <Post
                         key={id}
                         id={id}
@@ -123,7 +123,7 @@ function Feed() {
                         updatedAt={updatedAt}
                         modified={modified}
                         message={content}
-                        image={image}
+                        image={userImage}
                     />
                 ))}
                 {!nextLink && posts ? <p onClick={refresh}>모든 글을 다 보셨습니다. 눌러서 새로고침</p> : null}

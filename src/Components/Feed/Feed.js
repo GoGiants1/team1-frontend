@@ -87,7 +87,12 @@ function Feed() {
         }
     })
   
-
+    const refresh =() =>{
+        setPosts([])
+        setPageNumber(1)
+        setNextLink(null)
+        setNextPostId(-1)
+    }
     return (
         <div className="feed">
             <div className="feed_inputContainer">
@@ -105,7 +110,7 @@ function Feed() {
                     <InputOption Icon={CalendarViewDayIcon} title='글쓰기' color='#f5987e'/>
                 </div>
             </div>
-
+                {!nextLink && posts ? <p onClick={refresh}>모든 글을 다 보셨습니다. 눌러서 새로고침</p> : null}
                 {posts.map(({id, content, createdAt, updatedAt,modified, userId,userFirstName,userLastName,userSchool,userCompany, image}) =>(
                     <Post
                         key={id}
@@ -121,6 +126,7 @@ function Feed() {
                         image={image}
                     />
                 ))}
+                {!nextLink && posts ? <p onClick={refresh}>모든 글을 다 보셨습니다. 눌러서 새로고침</p> : null}
                 {fetching ? 'Loading...' : null}
         </div>
     )

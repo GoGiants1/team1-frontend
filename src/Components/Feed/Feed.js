@@ -106,7 +106,7 @@ function Feed() {
                     <InputOption Icon={ImageIcon} title='사진' color='#70B5F9'/>
                     <InputOption Icon={SubscriptionIcon} title='동영상' color='#E7A33E'/>
                     <InputOption Icon={EventNoteIcon} title='이벤트' color='#C0CBCD'/>
-                    <InputOption Icon={CalendarViewDayIcon} title='글쓰기' color='#f5987e'/>
+                    <div onClick={sendPost}><InputOption Icon={CalendarViewDayIcon} title='글쓰기' color='#f5987e'/></div>
                 </div>
             </div>
                 {!nextLink && posts ? <p onClick={refresh}>모든 글을 다 보셨습니다. 눌러서 새로고침</p> : null}
